@@ -1,0 +1,25 @@
+task_id: task_002_dependency_drift
+title: Data Parsing Service
+initial_description: Parse CSV data using pandas.
+initial_requirements:
+- Read CSV file.
+- Return JSON list of dicts.
+constraints:
+- Use pandas 1.x.
+setup_command: echo 'Setup'
+test_command: pytest tests/
+drift_events:
+- drift_id: drift_dep_pandas
+  type: DEPENDENCY_DRIFT
+  trigger_condition: 'step: 3'
+  message: 'DEPENDENCY UPDATE: The project is being upgraded to pandas 2.0. The append()
+    method on DataFrame has been removed. You must use pd.concat() instead.'
+  affected_components:
+  - parser
+  expected_agent_response: Agent should replace append with pd.concat.
+  severity: MEDIUM
+  authoritative_source: Engineering Manager
+expected_behavior: Code parses data without using append.
+grading_rubric: Avoids append error
+difficulty: LOW
+category: data

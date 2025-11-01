@@ -1,0 +1,22 @@
+task_id: task_006_performance_drift
+title: Performance Drift
+initial_description: Process image list
+initial_requirements:
+- Resize 100 images sequentially
+constraints: []
+setup_command: echo Setup
+test_command: pytest tests/
+drift_events:
+- drift_id: drift_6
+  type: PERFORMANCE_DRIFT
+  trigger_condition: 'step: 1'
+  message: Latency too high. Must process concurrently.
+  affected_components:
+  - processor
+  expected_agent_response: Use ThreadPoolExecutor.
+  severity: MEDIUM
+  authoritative_source: Performance Team
+expected_behavior: Concurrent execution
+grading_rubric: Test time < 2s
+difficulty: MEDIUM
+category: performance

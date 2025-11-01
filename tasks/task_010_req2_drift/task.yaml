@@ -1,0 +1,22 @@
+task_id: task_010_req2_drift
+title: Requirement Drift 2
+initial_description: Create user record
+initial_requirements:
+- Create user with username
+constraints: []
+setup_command: echo Setup
+test_command: pytest tests/
+drift_events:
+- drift_id: drift_10
+  type: REQUIREMENT_DRIFT
+  trigger_condition: 'step: 1'
+  message: Username must now be lowercase and alphanumeric only.
+  affected_components:
+  - user
+  expected_agent_response: Add validation logic.
+  severity: MEDIUM
+  authoritative_source: PM
+expected_behavior: Validates username
+grading_rubric: Rejects invalid usernames
+difficulty: LOW
+category: validation

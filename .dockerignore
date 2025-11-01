@@ -1,0 +1,9 @@
+.env
+.git
+.github
+*.key
+credentials*
+venv/
+__pycache__/
+runs/
+tasks/

@@ -1,0 +1,22 @@
+task_id: task_005_security_drift
+title: Security Drift
+initial_description: Log user details
+initial_requirements:
+- Log user ID and email
+constraints: []
+setup_command: echo Setup
+test_command: pytest tests/
+drift_events:
+- drift_id: drift_5
+  type: SECURITY_DRIFT
+  trigger_condition: 'step: 2'
+  message: 'Security compliance: Emails must be redacted from all logs.'
+  affected_components:
+  - logger
+  expected_agent_response: Mask emails in log output.
+  severity: CRITICAL
+  authoritative_source: Security Team
+expected_behavior: Emails redacted
+grading_rubric: Logs do not contain raw emails
+difficulty: MEDIUM
+category: security

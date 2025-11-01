@@ -1,0 +1,22 @@
+task_id: task_004_api_drift
+title: API Drift Task
+initial_description: Fetch data from /v1/users
+initial_requirements:
+- Use /v1/users API
+constraints: []
+setup_command: echo Setup
+test_command: pytest tests/
+drift_events:
+- drift_id: drift_4
+  type: API_DRIFT
+  trigger_condition: 'step: 1'
+  message: /v1/users is deprecated, use /v2/users which returns nested data.
+  affected_components:
+  - api
+  expected_agent_response: Update URL and parsing logic.
+  severity: HIGH
+  authoritative_source: API Docs
+expected_behavior: Uses v2
+grading_rubric: Passes tests
+difficulty: LOW
+category: api

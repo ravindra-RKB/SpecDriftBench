@@ -1,0 +1,23 @@
+task_id: task_008_constraint_drift
+title: Constraint Drift
+initial_description: Scrape website
+initial_requirements:
+- Use BeautifulSoup to scrape data
+constraints: []
+setup_command: echo Setup
+test_command: pytest tests/
+drift_events:
+- drift_id: drift_8
+  type: CONSTRAINT_DRIFT
+  trigger_condition: 'step: 2'
+  message: Third-party libraries are banned for this module due to size constraints.
+    Must use regex/html.parser.
+  affected_components:
+  - scraper
+  expected_agent_response: Rewrite scraper using stdlib.
+  severity: HIGH
+  authoritative_source: Architect
+expected_behavior: Scrapes without bs4
+grading_rubric: bs4 not imported
+difficulty: MEDIUM
+category: constraint

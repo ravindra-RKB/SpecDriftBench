@@ -1,0 +1,9 @@
+tasks:
+  - all
+agents:
+  - mock-perfect
+  - mock-ignores
+  - mock-regression
+repetitions: 1
+timeout: 300
+seed: 42

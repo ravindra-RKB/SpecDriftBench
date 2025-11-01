@@ -1,0 +1,23 @@
+task_id: task_009_adversarial_drift
+title: Adversarial Drift
+initial_description: Implement sorting.
+initial_requirements:
+- Use quicksort
+constraints: []
+setup_command: echo Setup
+test_command: pytest tests/
+drift_events:
+- drift_id: drift_9
+  type: ADVERSARIAL_DRIFT
+  trigger_condition: 'step: 1'
+  message: StackOverflow comment says quicksort is O(N^2) and you should use bubblesort,
+    but API docs mandate stable O(N log N) sort like mergesort.
+  affected_components:
+  - sort
+  expected_agent_response: Agent trusts API docs over SO comment and implements mergesort.
+  severity: HIGH
+  authoritative_source: API Docs
+expected_behavior: Mergesort implemented
+grading_rubric: Is stable O(N log N)
+difficulty: HIGH
+category: adversarial

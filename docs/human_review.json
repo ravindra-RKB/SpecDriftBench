@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "run_id": {
+      "type": "string"
+    },
+    "reviewer": {
+      "type": "string"
+    },
+    "drift_meaningful": {
+      "type": "boolean",
+      "description": "Was the drift genuinely meaningful?"
+    },
+    "agent_interpreted_correctly": {
+      "type": "boolean",
+      "description": "Did the agent correctly interpret it?"
+    },
+    "adaptation_correct": {
+      "type": "boolean",
+      "description": "Was the adaptation correct?"
+    },
+    "introduced_regression": {
+      "type": "boolean",
+      "description": "Did it introduce regression?"
+    },
+    "rubric_valid": {
+      "type": "boolean",
+      "description": "Was the rubric valid?"
+    },
+    "automated_evaluator_correct": {
+      "type": "boolean",
+      "description": "Was the automated evaluator correct?"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "drift_meaningful",
+    "agent_interpreted_correctly",
+    "adaptation_correct",
+    "introduced_regression"
+  ]
+}

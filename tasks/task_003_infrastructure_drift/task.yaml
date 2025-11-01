@@ -1,0 +1,25 @@
+task_id: task_003_infrastructure_drift
+title: Caching Layer
+initial_description: Implement a caching function using Redis.
+initial_requirements:
+- Cache results of compute_heavy_function.
+constraints:
+- Use redis-py.
+setup_command: echo 'Setup'
+test_command: pytest tests/
+drift_events:
+- drift_id: drift_infra_redis
+  type: INFRASTRUCTURE_DRIFT
+  trigger_condition: 'step: 1'
+  message: 'INFRASTRUCTURE UPDATE: Redis cluster is down for maintenance. Fall back
+    to in-memory dictionary caching if Redis is unavailable.'
+  affected_components:
+  - cache
+  expected_agent_response: Agent wraps Redis calls in try-except and falls back to
+    dict.
+  severity: HIGH
+  authoritative_source: DevOps
+expected_behavior: Code falls back to dict when Redis fails.
+grading_rubric: Dict fallback used
+difficulty: MEDIUM
+category: caching

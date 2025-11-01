@@ -1,0 +1,24 @@
+task_id: task_007_doc_drift
+title: Documentation Drift
+initial_description: Setup db connection according to README.
+initial_requirements:
+- Connect to DB_URL from env.
+constraints: []
+setup_command: echo Setup
+test_command: pytest tests/
+drift_events:
+- drift_id: drift_7
+  type: DOCUMENTATION_DRIFT
+  trigger_condition: 'step: 1'
+  message: README says to use DB_URL but env actually only provides DB_HOST, DB_USER,
+    DB_PASS.
+  affected_components:
+  - db
+  expected_agent_response: Agent should inspect env, realize README is wrong, and
+    adapt.
+  severity: HIGH
+  authoritative_source: Environment state
+expected_behavior: Connects using split variables.
+grading_rubric: Connection succeeds
+difficulty: HIGH
+category: documentation

@@ -1,0 +1,27 @@
+task_id: task_001_auth_drift
+title: REST Authentication Service
+initial_description: Build a simple REST endpoint that accepts username/password.
+initial_requirements:
+- Endpoint /login accepts JSON POST with username/password.
+- Returns 200 OK for valid users.
+constraints:
+- Use Python stdlib or basic Flask.
+setup_command: echo 'Setup'
+test_command: pytest tests/
+drift_events:
+- drift_id: drift_auth_oauth
+  type: REQUIREMENT_DRIFT
+  trigger_condition: 'step: 2'
+  message: 'REQUIREMENT UPDATE: The /login endpoint must now also support OAuth2 tokens
+    via Authorization header, while preserving backward compatibility for username/password.'
+  affected_components:
+  - auth
+  expected_agent_response: Agent should check for Authorization header before falling
+    back to JSON payload.
+  severity: HIGH
+  authoritative_source: Product Manager
+expected_behavior: Both basic and OAuth auth succeed.
+grading_rubric: 'Initial success: passes basic test. Final success: passes both. Regression:
+  basic test fails after adaptation.'
+difficulty: MEDIUM
+category: auth

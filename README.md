@@ -1,71 +1,123 @@
-# SpecDriftBench
+<div align="center">
 
-Evaluating Coding-Agent Reliability Under Changing Requirements
+# ⚡ SpecDriftBench
 
-SpecDriftBench is a benchmark for evaluating the reliability of coding agents under changing software-engineering requirements, testing their ability to detect, adapt, and preserve valid work across a variety of drift events.
+**Evaluating Coding-Agent Reliability Under Changing Requirements**
 
-## Motivation
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/release/python-3110/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=flat&logo=docker&logoColor=white)](https://www.docker.com/)
+[![OpenAI](https://img.shields.io/badge/Supported-OpenAI-412991.svg?style=flat&logo=openai&logoColor=white)](https://openai.com/)
 
-Most coding benchmarks are static: an agent receives a prompt and writes code. Real-world software engineering is dynamic. Requirements change, dependencies get deprecated, and environments break. SpecDriftBench measures whether agents can handle these realities.
+*Real-world software engineering isn't static. Why should our benchmarks be?*
 
-## Research Question
+</div>
 
-Do state-of-the-art coding agents remain reliable when requirements, dependencies, APIs, infrastructure, security constraints, or authoritative documentation change during execution?
+---
 
-## What Existing Coding Benchmarks Miss
+## 🚀 The Motivation
 
-Benchmarks like HumanEval or SWE-bench evaluate an agent's ability to solve a fixed issue. They do not evaluate:
-- Recognition of changing constraints.
-- Preservation of prior valid work (avoiding regressions).
-- Redundant work introduced during adaptation.
+Most coding benchmarks (like HumanEval or SWE-bench) evaluate an agent's ability to solve a **fixed issue**. The agent receives a prompt, writes code, and is graded. 
 
-## Drift Taxonomy
+However, real-world software engineering is highly dynamic:
+- 🔄 **Requirements change** mid-sprint.
+- 📦 **Dependencies get deprecated**.
+- 🌩️ **Environments break**.
 
-1. **REQUIREMENT_DRIFT**: Business logic changes.
-2. **DEPENDENCY_DRIFT**: Library versions or APIs change.
-3. **API_DRIFT**: External schema changes.
-4. **INFRASTRUCTURE_DRIFT**: Database or service unavailability.
-5. **SECURITY_DRIFT**: New compliance constraints.
-6. **PERFORMANCE_DRIFT**: Latency or scale requirements.
-7. **DOCUMENTATION_DRIFT**: Misalignment between docs and reality.
-8. **CONSTRAINT_DRIFT**: Restrictions on tools or libraries.
-9. **ADVERSARIAL_DRIFT**: Conflicting sources of truth.
+**SpecDriftBench** measures whether state-of-the-art coding agents can handle these realities. It tests their ability to detect changing constraints, adapt their implementation, and preserve prior valid work without introducing regressions.
 
-## Benchmark Architecture
+## 🏗️ How It Works
 
-- **Agent Interface**: Provider-agnostic API.
-- **Drift Engine**: Deterministic injection of drift events.
-- **Evaluation Engine**: Independent metrics for adaptation and regression.
-
-## Metrics
-
-- **Drift Recovery Score (DRS)**: Experimental metric combining final correctness, drift detection, adaptation quality, and regression avoidance.
-- **Initial Success**: Correctness before drift.
-- **Regression Rate**: Prior requirements broken after drift.
-- **Recovery Cost**: Actions required to adapt.
-
-## Quick Start
-
-```bash
-pip install -e .[dev]
-specdrift run tasks/task_001_auth_drift --agent mock-perfect
-specdrift evaluate runs/<RUN_ID>
+```mermaid
+flowchart LR
+    A[Agent Starts Task] --> B[Initial Implementation]
+    B --> C{🚨 Drift Injected}
+    C --> D[Requirements Shift]
+    D --> E[Agent Adapts]
+    E --> F[Objective Evaluation]
+    F --> G[Drift Recovery Score]
+    
+    style C fill:#ff4d4f,stroke:#cf1322,stroke-width:2px,color:#fff
+    style G fill:#52c41a,stroke:#389e0d,stroke-width:2px,color:#fff
 ```
 
-## Running the Mock Benchmark
+## ✨ Key Features
 
-The repository includes a deterministic `MockAgent` for testing the framework without API calls.
+- 🕵️ **Dynamic Drift Engine:** Deterministically injects drift events mid-execution.
+- 🐳 **Docker Isolation:** Secure, containerized execution of untrusted model code.
+- 📊 **Objective Evaluator:** Uses independent, test-driven metrics for adaptation and regression.
+- 🧩 **Provider-Agnostic API:** Easily plug in any LLM or Agent architecture.
 
-## Results
+## 🌪️ Drift Taxonomy
 
-*(Placeholder for future experimental results. No claims of statistical significance are made at this time.)*
+SpecDriftBench evaluates agents across a comprehensive spectrum of real-world drift scenarios:
 
-## Limitations
+| Drift Type | Description |
+| :--- | :--- |
+| 💼 **REQUIREMENT_DRIFT** | Business logic or feature requirements change. |
+| 🔗 **DEPENDENCY_DRIFT** | Core library versions or APIs change abruptly. |
+| 🔌 **API_DRIFT** | External endpoint schemas or payloads change. |
+| ☁️ **INFRASTRUCTURE_DRIFT** | Database or microservice unavailability. |
+| 🔒 **SECURITY_DRIFT** | New compliance or security constraints introduced. |
+| ⚡ **PERFORMANCE_DRIFT** | Strict latency or scaling requirements added. |
+| 📖 **DOCUMENTATION_DRIFT** | Misalignment between authoritative docs and reality. |
+| 🚫 **CONSTRAINT_DRIFT** | Sudden restrictions on allowed tools or libraries. |
 
-- Synthetic nature of drift events.
-- Difficulty in perfectly isolating adaptation cost.
-- Potential benchmark contamination.
+## 📈 Evaluation Metrics
 
-## Research Ethics
+We introduce the **Drift Recovery Score (DRS)**, an experimental metric that combines:
+1. **Initial Success ($C$):** Correctness before the drift occurs.
+2. **Drift Detection ($D$):** Did the agent notice the environment changed?
+3. **Adaptation Quality ($A$):** Did the agent successfully implement the new requirement?
+4. **Regression Avoidance ($R$):** Did the agent break prior working code?
 
-No fabricated results. All trace data and evaluation scripts are open source to ensure reproducibility.
+**$$ DRS = C \times D \times A \times R $$**
+
+## 💻 Quick Start
+
+### 1. Installation
+Clone the repository and install the framework with development dependencies:
+```bash
+git clone https://github.com/ravindra-RKB/SpecDriftBench.git
+cd SpecDriftBench
+pip install -e .[dev]
+```
+
+### 2. Preflight Check
+Ensure your environment (Docker, API keys) is ready for a genuine experiment:
+```bash
+export SPECDRIFT_OPENAI_API_KEY="sk-..."
+export SPECDRIFT_OPENAI_MODEL="gpt-4-turbo"
+specdrift doctor
+specdrift preflight --agent openai --execution-mode docker
+```
+
+### 3. Run the Benchmark
+Execute a specific task with the agent:
+```bash
+specdrift run tasks/task_001_auth_drift --agent openai
+```
+
+### 4. Evaluate & Verify
+```bash
+specdrift evaluate runs/<RUN_ID>
+specdrift verify-run <RUN_ID>
+```
+
+## 🧪 Testing the Framework
+
+Don't want to burn API credits? Use the built-in deterministic `MockAgent` to validate the evaluation pipeline:
+```bash
+specdrift run tasks/task_001_auth_drift --agent mock-perfect
+```
+
+## 🛡️ Research Ethics & Limitations
+
+- **No fabricated results.** All trace data and evaluation scripts are designed to be open source to ensure reproducibility.
+- **Limitations:** The synthetic nature of drift events makes it difficult to perfectly isolate adaptation costs.
+- **Contamination:** Care must be taken to prevent benchmark contamination in LLM training data.
+
+---
+<div align="center">
+<i>Built for the next generation of autonomous software engineers.</i>
+</div>
